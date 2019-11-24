@@ -1,4 +1,9 @@
 
+from ui import print_message
+
+START_HOUR = 0
+END_HOUR = 1
+TITLE = 2
 
 def check_menu_option(input_option):
     list_of_options = ['s', 'c', 'v', 'q']
@@ -14,7 +19,39 @@ def check_valid_hour(hour):
         for char in hour:
             if char not in digs:
                 return False
-    return True            
+    return int(hour)            
 
-def check_valid_range(hour_start, hour_end):
-    pass
+def search_in_between(hour, schedule):
+        for i in range(len(schedule)):
+            if hour >  schedule[i][START_HOUR] and hour < schedule[i][END_HOUR]:
+                return True
+        return False         
+
+def search_for_me(element, datatype, schedule):
+    
+    for i in range(len(schedule)):
+        if schedule[i][datatype] == element:
+            return True
+    return False        
+
+def check_hour_combined(hour,datatype, schedule):
+
+    hour_modif = check_valid_hour(hour)
+
+    if hour_modif == False:
+        print_message('Unparsable input!\n')
+        return hour_modif
+
+    else:
+        if search_for_me(hour_modif,datatype, schedule) == False:
+            if search_in_between(hour_modif,schedule) == True:
+                if datatype == START_HOUR:
+                    print_message('Meeting start time overlaping with another meeting, try again.\n')
+                return False
+            else:
+                return hour_modif    
+
+        else:
+            if datatype == START_HOUR:
+                print_message('There is already a meeting starting at that time, try again.\n')
+                return False        

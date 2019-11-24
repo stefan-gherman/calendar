@@ -12,8 +12,7 @@ def show_menu():
           + '(q) Quit' + '\n' * line_spacing)
 
 
-def process_choice(choice):
-    pass
+
 
 
 def show_schedule(schedule):
@@ -26,3 +25,4 @@ def show_schedule(schedule):
                       .format(StartHour=schedule[meetings][START_HOUR],
                               EndHour=schedule[meetings][END_HOUR],
                               Title=schedule[meetings][TITLE]))
+    print_message('\n')
