@@ -20,9 +20,12 @@ def show_schedule(schedule):
     END_HOUR = 1
     TITLE = 2
     print_message('Your Schedule for the day:')
-    for meetings in range(len(schedule)):
-        print_message('{StartHour} - {EndHour} {Title}'
-                      .format(StartHour=schedule[meetings][START_HOUR],
-                              EndHour=schedule[meetings][END_HOUR],
-                              Title=schedule[meetings][TITLE]))
-    print_message('\n')
+    if len(schedule) == 0:
+        print_message('No scheduled meetings\n')
+    else:    
+        for meetings in range(len(schedule)):
+            print_message('{StartHour} - {EndHour} {Title}'
+                        .format(StartHour=schedule[meetings][START_HOUR],
+                                EndHour=schedule[meetings][END_HOUR],
+                                Title=schedule[meetings][TITLE]))
+        print_message('\n')
