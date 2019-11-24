@@ -1,5 +1,5 @@
 from ui import print_message, show_schedule
-from checks import check_hour_combined, check_duration, check_end_hour_combined
+from checks import check_hour_combined, check_duration, check_end_hour_combined, check_cancel_hour
 
 START_HOUR = 0
 END_HOUR = 1
@@ -28,6 +28,15 @@ def schedule_meeting(schedule):
 
 def cancel_meeting(schedule):
     print_message('Cancel a meeting.')
+    cancel_hour = get_input('Select Starting Hour: ')
+    pop_index = check_cancel_hour(cancel_hour, START_HOUR, dummy_schedule)
+
+    while check_cancel_hour(cancel_hour, START_HOUR, dummy_schedule) == None:
+        cancel_hour = get_input('Select Starting Hour: ')
+        pop_index = check_cancel_hour(cancel_hour, START_HOUR, dummy_schedule)
+
+    cancel_hour = int(cancel_hour)
+    dummy_schedule.pop(pop_index)
 
 def view_meeting(schedule):
     schedule = sort_schedule(schedule)

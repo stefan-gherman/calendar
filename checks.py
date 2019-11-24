@@ -49,7 +49,7 @@ def search_for_me(element, datatype, schedule):
     
     for i in range(len(schedule)):
         if schedule[i][datatype] == element:
-            return True
+            return True,i
     return False        
 
 def check_hour_combined(hour,datatype, schedule):
@@ -81,3 +81,19 @@ def check_end_hour_combined(hour, datatype, schedule):
             return None
     else:
         return hour        
+
+
+def check_cancel_hour(hour,datatype,schedule):
+
+    if check_valid_hour(hour) == None:
+        print_message('Unparsable Data.\n')
+        return None
+    else:
+        hour = check_valid_hour(hour)
+        if search_for_me(hour, datatype, schedule) == False:
+            print_message('No meeting starting at this hour, try again.\n')
+            return None
+        else:
+            i = search_for_me(hour,datatype,schedule)
+        
+            return i[1]   
