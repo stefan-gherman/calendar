@@ -1,11 +1,11 @@
 from ui import print_message, show_schedule
 from checks import check_hour_combined, check_duration, check_end_hour_combined, check_cancel_hour, search_for_me
+from storage import write_to_file, read_from_file
 
 START_HOUR = 0
 END_HOUR = 1
-def dummy_return_list():
-    return [[9,10,'Meeting_A'],[11,13,'Presentation'],[14,16,'Ending']]
-dummy_schedule = dummy_return_list()    
+filename = 'meetings.txt'
+schedule = read_from_file(filename)  
 def kill():
     print_message('Exiting...')
     quit()
@@ -18,28 +18,31 @@ def schedule_meeting(schedule):
     start_hour = int(start_hour)
     duration = handle_duration()
     end_hour = start_hour + duration
-    while check_end_hour_combined(end_hour, END_HOUR, dummy_schedule) == None:
+    while check_end_hour_combined(end_hour, END_HOUR, schedule) == None:
         duration = handle_duration()
         end_hour = start_hour + duration
     print_message('\nNew Meeting Created: {startHour} - {endHour} {Title}\n'.format(startHour = start_hour, 
                                                                                     endHour = end_hour, 
                                                                                     Title = title))    
-    dummy_schedule.append([start_hour, end_hour, title])
+    schedule.append([start_hour, end_hour, title])
+    write_to_file(schedule, filename)
 
 def cancel_meeting(schedule):
     print_message('Cancel a meeting.')
     cancel_hour = get_input('Select Starting Hour: ')
 
-    while check_cancel_hour(cancel_hour, START_HOUR, dummy_schedule) == None:
+    while check_cancel_hour(cancel_hour, START_HOUR, schedule) == None:
         cancel_hour = get_input('Select Starting Hour: ')
 
     cancel_hour = int(cancel_hour)
-    pop_index = search_for_me(cancel_hour, START_HOUR, dummy_schedule)[1]
-    dummy_schedule.pop(pop_index)
+    pop_index = search_for_me(cancel_hour, START_HOUR, schedule)[1]
+    schedule.pop(pop_index)
+    write_to_file(schedule, filename)
     print_message('Meeting Canceled.\n')
 
 def view_meeting(schedule):
     schedule = sort_schedule(schedule)
+    write_to_file(schedule, filename)
     show_schedule(schedule)
     
 def sort_schedule(schedule):
@@ -57,7 +60,7 @@ def handle_option(option):
 
     if option == 'q':
         return option_handler[option]()
-    return option_handler[option](dummy_schedule)
+    return option_handler[option](schedule)
 
 def handle_duration():
     duration = get_input('Meeting Duration: ')
@@ -70,7 +73,7 @@ def handle_duration():
 def handle_hour():
     start_hour = get_input('Start Hour: ')
 
-    while check_hour_combined(start_hour,START_HOUR, dummy_schedule) == None:
+    while check_hour_combined(start_hour,START_HOUR, schedule) == None:
        start_hour = get_input('Start Hour: ')  
     print_message('\n')
     return int(start_hour)  
