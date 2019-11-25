@@ -6,7 +6,7 @@ END_HOUR = 1
 TITLE = 2
 
 def check_menu_option(input_option):
-    list_of_options = ['s', 'c', 'v', 't','q']
+    list_of_options = ['s', 'c', 'v','m','t','q']
     if input_option not in list_of_options:
         return False
     return True
@@ -39,10 +39,14 @@ def check_duration(duration):
         else:
             return duration            
 
-def search_in_between(hour, schedule):
+def search_in_between(hour, schedule, datatype):
         for i in range(len(schedule)):
-            if hour >  schedule[i][START_HOUR] and hour < schedule[i][END_HOUR]:
-                return True
+            if datatype == START_HOUR:
+                if hour >  schedule[i][START_HOUR] and hour < schedule[i][END_HOUR]:
+                    return True
+            else:
+                if hour >  schedule[i][START_HOUR] and hour <= schedule[i][END_HOUR]:
+                    return True        
         return False         
 
 def search_for_me(element, datatype, schedule):
@@ -71,7 +75,7 @@ def check_hour_combined(hour,datatype, schedule):
 
     else:
         if search_for_me(hour_modif,datatype, schedule) == False:
-            if search_in_between(hour_modif,schedule) == True:
+            if search_in_between(hour_modif,schedule,START_HOUR) == True:
                 if datatype == START_HOUR:
                     print_message('Meeting start time overlaping with another meeting, try again.\n')
                 return None
@@ -91,7 +95,7 @@ def check_end_hour_combined(hour, datatype, schedule):
     if check_hour_in_working_time(hour,datatype) == False:
         print_message('Meeting extends beyond working time. Try adjusting the duration.\n')
         return None
-    if search_in_between(hour,schedule) == True:
+    if search_in_between(hour,schedule,END_HOUR) == True:
         if datatype == END_HOUR:
             print_message('Ending hour overlaps with another meeting, try changing the duration.\n')
             return None

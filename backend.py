@@ -4,17 +4,18 @@ from storage import write_to_file, read_from_file
 
 START_HOUR = 0
 END_HOUR = 1
+TITLE = 2
 filename = 'meetings.txt'
 schedule = read_from_file(filename)  
 def kill():
     print_message('Exiting...')
     quit()
 
-def schedule_meeting(schedule):
-    print_message('Schedule a new meeting.')
+def scheduler(schedule,pop_index = None):
+    if pop_index != None:
+        schedule.pop(pop_index)
     title = get_input('Meeting Title: ')
     start_hour = handle_hour()
-       
     start_hour = int(start_hour)
     duration = handle_duration()
     end_hour = start_hour + duration
@@ -22,10 +23,16 @@ def schedule_meeting(schedule):
         duration = handle_duration()
         end_hour = start_hour + duration
     print_message('\nNew Meeting Created: {startHour} - {endHour} {Title}\n'.format(startHour = start_hour, 
-                                                                                    endHour = end_hour, 
-                                                                                    Title = title))    
+                                                                                        endHour = end_hour, 
+                                                                                        Title = title))    
+    
     schedule.append([start_hour, end_hour, title])
+    schedule = sort_schedule(schedule)
     write_to_file(schedule, filename)
+
+def schedule_meeting(schedule):
+    print_message('Schedule a new meeting.')
+    scheduler(schedule)
 
 def cancel_meeting(schedule):
     print_message('Cancel a meeting.')
@@ -56,7 +63,7 @@ def get_input(prompt):
 
 def handle_option(option):
 
-    option_handler = {'s' : schedule_meeting, 'c' : cancel_meeting, 'v' : view_meeting, 't': calculate_total_hrs, 'q' : kill}
+    option_handler = {'s' : schedule_meeting, 'c' : cancel_meeting, 'v' : view_meeting, 'm': modify_meeting, 't': calculate_total_hrs, 'q' : kill}
 
     if option == 'q':
         return option_handler[option]()
@@ -84,3 +91,14 @@ def calculate_total_hrs(schedule):
     for i in range(len(schedule)):
         total_hrs += schedule[i][END_HOUR] - schedule[i][START_HOUR]
     print_message('Total Hours of Meeting: {}\n'.format(total_hrs))   
+
+def modify_meeting(schedule):
+    print_message('Modify a meeting.')
+    modif_hour = get_input('Select Starting Hour: ')     
+
+    while check_cancel_hour(modif_hour, START_HOUR, schedule) == None:
+        modif_hour = get_input('Select Starting Hour: ')
+
+    modif_hour = int(modif_hour)
+    pop_index = search_for_me(modif_hour, START_HOUR, schedule)[1]
+    scheduler(schedule, pop_index)
