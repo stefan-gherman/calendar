@@ -11,6 +11,7 @@ def show_menu():
           + '(v) View your schedule' + '\n' * line_spacing
           + '(m) Modify Existing Meeting' + '\n' * line_spacing
           + '(t) Total Meeting hour count' + '\n' * line_spacing
+          + '(cm) Compact Meetings' + '\n' * line_spacing
           + '(q) Quit' + '\n' * line_spacing)
 
 

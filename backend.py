@@ -63,7 +63,8 @@ def get_input(prompt):
 
 def handle_option(option):
 
-    option_handler = {'s' : schedule_meeting, 'c' : cancel_meeting, 'v' : view_meeting, 'm': modify_meeting, 't': calculate_total_hrs, 'q' : kill}
+    option_handler = {'s' : schedule_meeting, 'c' : cancel_meeting, 'v' : view_meeting, 
+    'm': modify_meeting, 't': calculate_total_hrs, 'cm': compact_meeting , 'q' : kill}
 
     if option == 'q':
         return option_handler[option]()
@@ -102,3 +103,16 @@ def modify_meeting(schedule):
     modif_hour = int(modif_hour)
     pop_index = search_for_me(modif_hour, START_HOUR, schedule)[1]
     scheduler(schedule, pop_index)
+
+def compact_meeting(schedule):
+    min_start_hour = 8
+
+    for i in range(len(schedule)):
+        timespan = schedule[i][END_HOUR] - schedule[i][START_HOUR]
+        if schedule[i][START_HOUR] > min_start_hour:
+            schedule[i][START_HOUR] = min_start_hour
+            schedule[i][END_HOUR] = schedule[i][START_HOUR] + timespan
+            min_start_hour = schedule[i][END_HOUR]
+
+    show_schedule(schedule)        
+

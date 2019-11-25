@@ -1,5 +1,4 @@
 A simple calendar program able to schedule and cancel meetings, save and load 
-to file and *smartly compact meetings.
+to file and smartly compact meetings.
 
 
-* feature under development

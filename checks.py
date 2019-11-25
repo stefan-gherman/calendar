@@ -6,7 +6,7 @@ END_HOUR = 1
 TITLE = 2
 
 def check_menu_option(input_option):
-    list_of_options = ['s', 'c', 'v','m','t','q']
+    list_of_options = ['s', 'c', 'v','m','cm','t','q']
     if input_option not in list_of_options:
         return False
     return True
