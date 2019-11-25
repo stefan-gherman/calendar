@@ -9,6 +9,7 @@ def show_menu():
     print('\n' + '(s) Schedule a new meeting' + '\n' * line_spacing
           + '(c) Cancel an existing meeting' + '\n' * line_spacing
           + '(v) View your schedule' + '\n' * line_spacing
+          + '(t) Total Meeting hour count' + '\n' * line_spacing
           + '(q) Quit' + '\n' * line_spacing)
 
 

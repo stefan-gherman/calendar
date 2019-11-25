@@ -56,7 +56,7 @@ def get_input(prompt):
 
 def handle_option(option):
 
-    option_handler = {'s' : schedule_meeting, 'c' : cancel_meeting, 'v' : view_meeting, 'q' : kill}
+    option_handler = {'s' : schedule_meeting, 'c' : cancel_meeting, 'v' : view_meeting, 't': calculate_total_hrs, 'q' : kill}
 
     if option == 'q':
         return option_handler[option]()
@@ -77,3 +77,10 @@ def handle_hour():
        start_hour = get_input('Start Hour: ')  
     print_message('\n')
     return int(start_hour)  
+
+
+def calculate_total_hrs(schedule):
+    total_hrs = 0
+    for i in range(len(schedule)):
+        total_hrs += schedule[i][END_HOUR] - schedule[i][START_HOUR]
+    print_message('Total Hours of Meeting: {}\n'.format(total_hrs))   
